@@ -1,12 +1,12 @@
-export const counterReducer = (action, state) => {
-    switch (action) {
-        case "INCREMENT":
-            return state.count + 1;
-        case "DECREMENT":
-            return state.count - 1;
-        case "DELETE":
-            return 0;
+import {INCREMENT, DECREMENT} from "../pages/Counter"
+
+export const countReducer = (state, action) => {
+    switch (action.type) {
+        case INCREMENT:
+            return state + 1;
+        case DECREMENT:
+            return state - 1;
         default:
-            break;
+            return state; 
     }
-}
+};
