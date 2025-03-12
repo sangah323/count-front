@@ -1,10 +1,8 @@
-import './App.css';
-import { Counter } from "./pages"
+import "./App.css";
+import { Counter } from "./pages";
 
 function App() {
-  return (
-    <Counter/>
-  );
+  return <Counter />;
 }
 
 export default App;
