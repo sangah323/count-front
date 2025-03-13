@@ -11,3 +11,10 @@ root.render(
     <App />
   </Provider>
 );
+
+/*
+  이 때 초기값이 들어감
+  const init = {
+    count : 0,
+    history:[]  }
+*/

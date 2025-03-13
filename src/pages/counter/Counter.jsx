@@ -1,28 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getHistory, getInit } from "./getData";
 import {
-  INCREMENT,
-  DECREMENT,
-  SETDATA,
-  RESET,
-} from "../../store/counterReducer";
-import { getCount, postCount, resetCount } from "../../api/counter";
+  COUNT_INCREMENT,
+  COUNT_DECREMENT,
+} from "../../reducers/counterReducer";
+import { fetchSetData, updateCount, deleteCount } from "../../actions";
 
-const Left = ({ handleDispatch, handleReset }) => {
-  const { count } = useSelector((state) => state);
+const Left = () => {
+  const { count } = useSelector((state) => state.count);
+  const dispatch = useDispatch();
+
   return (
     <>
-      <h1>{count}</h1>
-      <button onClick={() => handleDispatch(INCREMENT, count + 1)}>+</button>
-      <button onClick={() => handleDispatch(DECREMENT, count - 1)}>-</button>
-      <button onClick={() => handleReset()}>RESET</button>
+      <h2>count : {count}</h2>
+      <button onClick={() => dispatch(updateCount(COUNT_INCREMENT, count + 1))}>
+        +
+      </button>
+      <button onClick={() => dispatch(updateCount(COUNT_DECREMENT, count - 1))}>
+        -
+      </button>
+      <button onClick={() => dispatch(deleteCount())}>RESET</button>
     </>
   );
 };
 
 const Right = () => {
-  const { history } = useSelector((state) => state);
+  const { history } = useSelector((state) => state.count);
   if (history.length <= 0) return <>No Value,,</>;
 
   return (
@@ -39,51 +42,28 @@ const Right = () => {
 export const Counter = () => {
   // 전역 상태 가져오기 => useSelector
   // 전역 상태 바꾸기 => useDispatch
-  // const {state} = useCounter
-  const { history } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   // 초기값
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getInit();
-        dispatch({ type: SETDATA, payload: data });
-      } catch (error) {
-        console.error("초기 데이터 로딩 실패", error);
-      }
-    };
-    fetchData();
-  }, []);
+    dispatch(fetchSetData());
+  }, [dispatch]);
 
-  // type : "" | "" | ""
-  // DB랑 렌더링 싱크가 잘 안맞음 렌더링이 느려서 계속 클릭ㅜ
-  const handleDispatch = async (type, newValue) => {
-    try {
-      await postCount(newValue); // 새로운 값 저장
-      const result = await getCount(); // 최신 데이터 불러오기
-      const updatedHistory = getHistory(result);
-      dispatch({
-        type,
-        payload: { count: result[0].value, history: updatedHistory },
-      });
-    } catch (error) {
-      console.error("Counter 기능 실패...", error);
-    }
-  };
-
-  const handleReset = async () => {
+  /*
+    const handleReset = async () => {
     try {
       await resetCount();
-      const data = await getInit();
-      dispatch({ type: SETDATA, payload: data });
+      const data = await getData();
+      dispatch({ type: COUNT_SETDATA, payload: data });
     } catch (error) {
       console.log("RESET Failed,,", error);
     }
   };
+  */
+
   return (
     <>
-      <Left handleDispatch={handleDispatch} handleReset={handleReset} />
+      <Left />
       <Right />
     </>
   );

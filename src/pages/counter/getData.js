@@ -7,7 +7,7 @@ export const getHistory = (result) => {
   }));
 };
 
-export const getInit = async () => {
+export const getData = async () => {
   const result = await getCount();
   if (result.length <= 0) return { count: 0, history: [] };
   const history = getHistory(result);

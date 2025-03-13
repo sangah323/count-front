@@ -3,16 +3,23 @@ div {
   margin: 50px auto;
 }
 
+.count-area {
+  display: flex;
+  gap: 150px;
+}
+
 button {
-  width: 60px;
+  width: 80px;
   height: 30px;
-  margin-right: 10px;
+  margin-top: 20px;
+  margin-right: 20px;
   border: none;
   font-weight: 700;
   cursor: pointer;
 }
 
 ul {
+  display: block;
   padding-top: 20px;
 }
 
